@@ -1,0 +1,60 @@
+.page {
+  @apply flex flex-col;
+  background: #dfdfdf;
+  padding: 10px;
+  gap: 10px;
+}
+.page__now {
+  @apply flex-1 rounded shadow-md px-2 py-3 text-center font-semibold text-sm;
+  background: #fff;
+  table {
+    tr {
+      td {
+        @apply p-1;
+      }
+    }
+  }
+}
+
+.calender {
+  @apply rounded shadow-md px-2 py-3;
+  background: #fff;
+
+  .prev-month,
+  .next-month {
+    color: #a1a1a1;
+  }
+  .lunar-day {
+    font-size: 13px;
+    color: #979797;
+  }
+  .today {
+    font-weight: 600;
+    border-radius: 50%;
+    background: #e7e7e7;
+  }
+  table {
+    width: 100%;
+    tr {
+      th {
+        font-size: 14px;
+      }
+      td {
+        padding: 5px;
+        text-align: center;
+        font-size: 16px;
+      }
+    }
+  }
+}
+.calender__text {
+  @apply text-lg font-semibold flex gap-2;
+  margin-bottom: 10px;
+  cursor: pointer;
+  &::after {
+    content: "❯";
+    display: block;
+    font-size: 14px;
+    transform: rotateZ(90deg);
+  }
+}
