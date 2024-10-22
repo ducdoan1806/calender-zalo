@@ -1,19 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { LunarDate } from "vietnamese-lunar-calendar";
-import { DatePicker } from "zmp-ui";
 
 const Calender = ({ month, year }) => {
+  const [newDate, setNewDate] = useState({ month: month, year: year });
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const today = new Date();
   const isToday = (day) =>
-    today.getFullYear() === year &&
-    today.getMonth() === month &&
+    today.getFullYear() === Number(newDate.year) &&
+    today.getMonth() === Number(newDate.month) &&
     today.getDate() === day;
 
-  const date = new Date(year, month);
+  const date = new Date(Number(newDate.year), Number(newDate.month));
   const firstDay = date.getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const prevMonthDays = new Date(year, month, 0).getDate();
+  const daysInMonth = new Date(
+    Number(newDate.year),
+    Number(newDate.month) + 1,
+    0
+  ).getDate();
+  const prevMonthDays = new Date(
+    Number(newDate.year),
+    Number(newDate.month),
+    0
+  ).getDate();
   const rows = [];
 
   let currentDay = 1;
@@ -38,17 +46,24 @@ const Calender = ({ month, year }) => {
         currentDay++;
       } else {
         const dayClass = isToday(currentDay) ? "today" : "";
-        const lunarDay = new LunarDate(year, month + 1, currentDay); // month + 1 because month is zero-based
-        console.log("lunarDay: ", lunarDay);
+        const lunarDay = new LunarDate(
+          Number(newDate.year),
+          Number(newDate.month) + 1,
+          currentDay
+        ); // month + 1 because month is zero-based
         cells.push(
           <td key={j} className={dayClass}>
             {currentDay}
             <br />
             <span
               className="lunar-day"
-              style={lunarDay.date === 1 ? { color: "red" } : {}}
+              style={
+                lunarDay.date === 1 || lunarDay.date === 15
+                  ? { color: "red" }
+                  : {}
+              }
             >
-              {lunarDay.date === 1
+              {lunarDay.date === 1 || lunarDay.date === 15
                 ? lunarDay.date + "/" + lunarDay.month
                 : lunarDay.date}
             </span>
@@ -67,19 +82,21 @@ const Calender = ({ month, year }) => {
 
   return (
     <div className="calender">
-      <DatePicker
-        mask
-        maskClosable
-        locale="vi"
-        title="Select month"
-        defaultValue={new Date()}
-        formatPickedValueDisplay={(date) =>
-          `Tháng ${new Date(date).getMonth() + 1} năm ${new Date(
-            date
-          ).getFullYear()}`
-        }
-      />
-
+      <div className="calender__text">
+        <input
+          type="month"
+          value={`${Number(newDate.year)}-${(
+            "0" +
+            (Number(newDate.month) + 1)
+          ).slice(-2)}`}
+          onChange={(e) => {
+            if (e.target.value) {
+              const dateArr = e.target.value.split("-");
+              setNewDate({ year: dateArr[0], month: dateArr[1] - 1 });
+            }
+          }}
+        />
+      </div>
       <table>
         <thead>
           <tr>

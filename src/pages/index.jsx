@@ -1,12 +1,30 @@
-import React, { Suspense } from "react";
+import React, { useEffect } from "react";
 import { LunarDate } from "vietnamese-lunar-calendar";
-import { List, Page, Icon, useNavigate } from "zmp-ui";
+import { Page } from "zmp-ui";
 import Calender from "../components/Calender";
+import { getUserInfo } from "zmp-sdk";
 
 const HomePage = () => {
   const today = new Date();
   const lunarDate = new LunarDate(today);
-
+  const getUser = async () => {
+    try {
+      const { userInfo } = await getUserInfo({});
+      console.log("data: ", userInfo);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const { userInfo } = await getUserInfo({});
+      } catch (error) {
+        // xử lý khi gọi api thất bại
+        console.log(error);
+      }
+    };
+  }, []);
   return (
     <Page className="page">
       <div className="flex gap-2">
@@ -14,7 +32,7 @@ const HomePage = () => {
           <table className="w-full">
             <thead>
               <tr>
-                <td>Thứ</td>
+                <td onClick={getUser}>Thứ</td>
                 <td>Ngày</td>
                 <td>Tháng</td>
                 <td>Năm</td>
@@ -45,7 +63,6 @@ const HomePage = () => {
                   {lunarDate.lunarMonth.can + " " + lunarDate.lunarMonth.chi}
                 </td>
                 <td>
-                  {" "}
                   {lunarDate.lunarYear.can + " " + lunarDate.lunarYear.chi}
                 </td>
               </tr>

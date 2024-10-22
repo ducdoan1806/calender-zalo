@@ -40,21 +40,20 @@
         font-size: 14px;
       }
       td {
+        width: calc(100% / 7);
         padding: 5px;
         text-align: center;
-        font-size: 16px;
+        font-size: 14px;
       }
     }
   }
 }
 .calender__text {
-  @apply text-lg font-semibold flex gap-2;
+  @apply text-lg font-semibold;
   margin-bottom: 10px;
-  cursor: pointer;
-  &::after {
-    content: "❯";
-    display: block;
-    font-size: 14px;
-    transform: rotateZ(90deg);
+
+  input {
+    outline: none;
+    cursor: pointer;
   }
 }
